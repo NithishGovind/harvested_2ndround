@@ -44,7 +44,7 @@ Per-class summary (from the classification report):
 
 | Device | Images | Avg Latency |
 |--------|--------|-------------|
-| **GPU (T4)** | 1,600 | **X.XX ms/image** |
+| **GPU (T4)** | 1,600 | **7.6 ms/image** |
 
 *Measured on 50 batches (1,600 images)*
 
