@@ -5,26 +5,42 @@ from tensorflow import keras
 from tensorflow.keras.preprocessing import image
 
 # 1. CONFIG
-MODEL_PATH = "deepweeds_resnet_attention.keras"   # your .keras file
-IMG_SIZE = 224                                    # set to your training size
+MODEL_PATH = "deepweeds_resnet_attention(1).keras"
+IMG_SIZE = 224
 class_names = [
-    "class_0",
-    "class_1",
-    "class_2",
-    "class_3",
-    "class_4",
-    "class_5",
-    "class_6",
-    "class_7",
-    "class_8",
-]  # replace with your actual class names in correct order
+    "Chinee apple",      # 0
+    "Lantana",           # 1
+    "Parkinsonia",       # 2
+    "Parthenium",        # 3
+    "Prickly acacia",    # 4
+    "Rubber vine",       # 5
+    "Siam weed",         # 6
+    "Snake weed",        # 7
+    "Negative",          # 8
+]  # Update with actual DeepWeeds class names
 
-# If you used a custom layer (e.g., squeeze_excite_block), import/define it here
-# from your_module import squeeze_excite_block
+# 2. DEFINE CUSTOM LAYER (squeeze_excite_block)
+def squeeze_excite_block(input_tensor, ratio=16):
+    """Squeeze-and-Excitation block for channel attention"""
+    channels = input_tensor.shape[-1]
+    
+    # Squeeze: Global Average Pooling
+    squeeze = tf.keras.layers.GlobalAveragePooling2D()(input_tensor)
+    
+    # Excite: Two dense layers
+    excitation = tf.keras.layers.Dense(channels // ratio, activation='relu')(squeeze)
+    excitation = tf.keras.layers.Dense(channels, activation='sigmoid')(excitation)
+    
+    # Reshape for multiplication
+    excitation = tf.keras.layers.Reshape((1, 1, channels))(excitation)
+    
+    # Scale: Multiply input by excitation weights
+    scaled = tf.keras.layers.Multiply()([input_tensor, excitation])
+    return scaled
 
-
-# 2. LOAD MODEL
-model = keras.models.load_model(MODEL_PATH)
+# 3. LOAD MODEL with custom_objects
+custom_objects = {"squeeze_excite_block": squeeze_excite_block}
+model = keras.models.load_model(MODEL_PATH, custom_objects=custom_objects)
 
 def load_and_preprocess(img_path):
     """Load image from disk and preprocess like during training."""
