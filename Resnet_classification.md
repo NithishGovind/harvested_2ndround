@@ -72,38 +72,49 @@
 - **Visual similarity**: Certain weed species visually overlap with background
 - **Mean IoU (58.5%)** suggests room for improvement in boundary cases
 
+## 4. Camera & Lighting Analysis
 
-### Model Robustness Test (Ultra-Subtle Distortions)
-Tested imperceptible distortions on 20 images:
+To assess the robustness of the ResNet‑50 classifier to small changes in capture conditions, the model was evaluated under several synthetic camera and lighting variations applied to test images.
 
-| Condition     | Accuracy | Degradation |
-|---------------|----------|-------------|
-| **Original**  | **100%** | -           |
-| Cool Temp     | **5%**   | **-95%**    |
-| Low Light     | **0%**   | **-100%**   |
-| Motion Blur   | **50%**  | **-50%**    |
-| Overexposure  | **30%**  | **-70%**    |
-| Warm Temp     | **40%**  | **-60%**    |
+### 4.1 Experimental Setup
 
-### Key Findings
-**⚠️ Critical Insight**: ResNet-50 is **extremely brittle** to even *invisible* perturbations:
-- **Total failure** under low-light (0% accuracy)
-- **Near-total failure** under color shifts (5-40%)
-- **50/50** on motion blur despite no visible effect
+- Base model: ResNet‑50 classifier trained on the DeepWeeds dataset.
+- Input: 20 randomly sampled test images (clean, correctly preprocessed).
+- Distortions: Applied in image space as very small perturbations to approximate realistic capture variations:
+  - Low‑light: slight global brightness reduction.
+  - Overexposure: slight global brightness increase.
+  - Color temperature (cool): minor increase in blue channel intensity.
+  - Color temperature (warm): minor increase in red channel intensity.
+  - Motion blur: light spatial smoothing using a small kernel.
+- For each distorted image, the model’s predicted class was compared to the prediction on the corresponding clean image (original condition).
 
-### Implications
-1. **Over-reliance on exact ImageNet preprocessing** - tiny shifts destroy performance
-2. **Poor generalization** to real-world camera variations
-3. **Data augmentation needed** during training for robustness
-4. **Attention models may handle this better** (next experiment)
+### 4.2 Results
+### Figure 5: Failure Case Analysis
 
-### [Figure 4: Failure Under Imperceptible Distortions]
-![Ultra-Subtle Failures](camera_failures.png)
-**Even humans can't see these changes, but model predictions collapse**
+![Failure Cases](cam.png)  
 
-## 6. Conclusion
-The ResNet-50 baseline achieves **77% accuracy** on DeepWeeds, establishing a strong foundation. While class imbalance affects minority weed detection, macro F1 (73.1%) and mAP (85.5%) confirm reliable performance across all species. Failure analysis reveals opportunities for attention mechanisms and targeted augmentation in future iterations.
+Accuracy relative to the original predictions for each condition (20 images):
 
+| Condition     | Accuracy | Samples |
+|---------------|----------|---------|
+| Original      | 100.0%   | 20      |
+| Low light     | 10.0%    | 20      |
+| Overexposure  | 10.0%    | 20      |
+| Cool temp     | 45.0%    | 20      |
+| Warm temp     | 55.0%    | 20      |
+| Motion blur   | 65.0%    | 20      |
 
+### 4.3 Observations
 
+- Even mild changes in brightness (low‑light, overexposure) caused a severe drop in prediction consistency relative to the original images.
+- Color temperature shifts (cool/warm) moderately impacted robustness, indicating sensitivity to small changes in color balance.
+- The model was most tolerant to light motion blur among the perturbed conditions, but still showed a noticeable reduction compared to the original case.
+- Overall, the experiment highlights that the baseline ResNet‑50 model is fragile to small distribution shifts in camera and lighting conditions, motivating the need for:
+  - Stronger brightness / color augmentation during training.
+  - Potential use of attention mechanisms or more robust architectures.
+  - Domain‑specific preprocessing or normalization for deployment in variable outdoor environments.
+
+## Notebook
+
+You can view the full training notebook here: [resnet.ipynb](deepweeds-resnet-base.ipynb)
 ---
