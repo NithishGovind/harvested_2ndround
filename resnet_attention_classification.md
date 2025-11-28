@@ -19,7 +19,7 @@ Compared to the baseline ResNet-50 model, this variant introduces an attention b
 | **Macro F1-Score** | **78.4%** |
 | **Weighted F1-Score** | **82.0%** |
 | **mAP (macro over classes)** | **89.0%** |
-| **Mean IoU** | **65.2%** |
+
 
 ### Per-Class Performance
 

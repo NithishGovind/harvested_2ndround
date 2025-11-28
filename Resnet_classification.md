@@ -17,7 +17,7 @@
 | **Macro F1-Score** | **73.1%** |
 | **Weighted F1-Score** | **78.0%** |
 | **mAP (macro over classes)** | **85.5%** |
-| **Mean IoU** | **58.5%** |
+
 
 ### Per-Class Performance
 ### Figure 1: Class report
