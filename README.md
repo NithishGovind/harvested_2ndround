@@ -22,17 +22,6 @@ This detection stage focuses on:
 - Inference latency and FPS on GPU/CPU
 - Failure-case visualization (8+ images under different camera/lighting conditions)
 
-### 1.3 Future Work: Pixel-Level Segmentation (Planned)
-
-The next planned step is to extend from bounding boxes to pixel-level segmentation of crops and weeds. Architectures such as U‑Net or Mask R‑CNN will be explored on appropriate datasets to enable:
-
-- Precise weed region delineation
-- Better integration with spraying or mechanical weeding hardware
-- Fine-grained area estimates for decision making
-
-Segmentation will be guided by insights from the current classification and detection phases.
-
----
 
 ## 2. Methodology Overview
 
