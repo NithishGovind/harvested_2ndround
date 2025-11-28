@@ -63,14 +63,13 @@
 ### Strengths
 - Strong overall accuracy (77%) despite severe class imbalance
 - Excellent inference speed (133 FPS on T4 GPU)
-- High mAP (85.5%) indicates good probability calibration
 - Robust recall on most weed classes (>0.75)
 
 ### Weaknesses & Failure Patterns
 - **Low precision on Classes 0, 7** (0.44, 0.48): likely confused with background
 - **Class imbalance impact**: Class 8 (919 samples) dominates weighted metrics
 - **Visual similarity**: Certain weed species visually overlap with background
-- **Mean IoU (58.5%)** suggests room for improvement in boundary cases
+
 
 ## 4. Camera & Lighting Analysis
 

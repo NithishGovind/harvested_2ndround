@@ -74,7 +74,7 @@ True vs. predicted labels for representative misclassified DeepWeeds images unde
 - Higher overall test accuracy (81%) and macro F1 (78.4%) compared to the baseline ResNet-50.
 - Substantial improvement in mean IoU (65.2%), indicating better class separation and fewer severe misclassifications.
 - High macro recall (85.3%) suggests that attention helps the model detect weeds more reliably across classes, including minority classes.
-- Higher mAP (89.0%) indicates better calibrated probability outputs and improved ranking performance.
+
 
 ### Weaknesses & Failure Patterns
 - Classes 0 and 7, while improved, still show relatively lower precision and F1 compared with the best-performing classes, indicating residual confusion with background or visually similar species.
